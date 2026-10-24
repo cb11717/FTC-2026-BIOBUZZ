@@ -17,54 +17,63 @@ import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
-@Autonomous(name="BlueAutoDown", group="Auto", preselectTeleOp="TeleOpJava")
-public class BlueAutoDown extends OpMode {
+@Autonomous(name="RedAutoUp", group="Auto", preselectTeleOp="TeleOpJava")
+public class RedAutoUp extends OpMode {
     private Follower follower; // you added this before
     private final PoseFactory p = PoseFactory.degrees(); // add this
 
     //our poses
-    private final Pose start = p.of(59, 132, 90); //This is the starting point
-    private final Pose detectingAprilTag = p.of(59, 105, 90); //We go forward to detect the April Tag
-    private final Pose shootingFirst4 = p.of(59, 132, 90); // Now we go back to shoot the 4
-    private final Pose flower = p.of(53, 130, 110); // We spline to the flower to get 4 more
-    private final Pose flowerControlPoint = p.of(58, 116, 0); // This is the control point for te previous spline
-    private final Pose shootingLast4 = p.of(59, 133, 90); //We spline back to shoot those 4
-    private final Pose shootingLast4ControlPoint = p.of(58, 116, 0); // This is the control point for the previous spline
-    private final Pose park = p.of(9, 106, 90); //We spline to park
-    private final Pose parkControlPoint = p.of(61, 104, 0); // This is the control point for the previous spline
+    private final Pose start = p.of(56, 9, -90); //This is our starting point
+    //private final Pose stay = p.of(56, 9, -90); //We want to stay here because we will shoot here next
+    //private final Pose shootingFirst3 = p.of(56, 9, -90);//We shoot the first 3 pollen
+    private final Pose flower = p.of(11.7, 55, -160); //Here we go to the flower to get 3 more pollem as we have 1 leftover
+    private final Pose shootingAfterTip = p.of(56, 9, -90); //Here we go back to shoot all 4 after the hive tips
+    private final Pose liningUp = p.of(9, 29, -90); //Here we line up with the wall and spline
+    private final Pose liningUpControlPoint = p.of(11.8, 48, 0); //This is the control point of the previous spline
+    private final Pose collectingWallPollen = p.of(9, 9, -90); //Now we rush forward to collect all the
+    private final Pose shootingLast4 = p.of(56, 9, -90); //Here we spline back to shoot the last 4
+    private final Pose shootingLast4ControlPoint = p.of(11.8, 48, 0); //This is control point of the previous spline
 
-    public Path detectingAprilTag() {
-        return line(start, detectingAprilTag).linear(start, detectingAprilTag);
+  /*  public Path shootingFirst3() {
+        return line(stay, shootingFirst3).linear(stay, shootingFirst3);
     }
 
-    public Path shootingFirst4() {
-        return line(detectingAprilTag, shootingFirst4).linear(detectingAprilTag, shootingFirst4);
-    }
+   */
 
     public Path flower() {
-        return curve(shootingFirst4, flowerControlPoint, flower).linear(shootingFirst4, flower);
+        return line(start, flower).linear(start, flower);
+    }
+
+    public Path shootingAfterTip() {
+        return line(flower, shootingAfterTip).linear(flower, shootingAfterTip);
+    }
+
+    public Path liningUp() {
+        return curve(shootingAfterTip, liningUpControlPoint, liningUp).linear(shootingAfterTip, liningUp);
+    }
+
+    public Path collectingWallPollen() {
+        return line(liningUp, collectingWallPollen).linear(liningUp, collectingWallPollen);
     }
 
     public Path shootingLast4() {
-        return curve(flower, shootingLast4ControlPoint, shootingLast4).linear(flower, shootingLast4);
-    }
-
-    public Path park() {
-        return curve(shootingLast4, parkControlPoint, park).linear(shootingLast4, park);
+        return curve(collectingWallPollen, shootingLast4ControlPoint, shootingLast4).linear(collectingWallPollen, shootingLast4);
     }
 
 
     private Command autoRoutine() {
         return sequential(
-                follow(follower, detectingAprilTag()),
-                // Add mechanism commands here.
-                follow(follower, shootingFirst4()),
+
                 // Add mechanism commands here.
                 follow(follower, flower()),
                 // Add mechanism commands here.
-                follow(follower, shootingLast4()),
+                follow(follower, shootingAfterTip()),
                 // Add mechanism commands here.
-                follow(follower, park())
+                follow(follower, liningUp()),
+                // Add mechanism commands here.
+                follow(follower, collectingWallPollen()),
+                // Add mechanism commands here.
+                follow(follower, shootingLast4())
                 // Add mechanism commands here.
         );
     }
