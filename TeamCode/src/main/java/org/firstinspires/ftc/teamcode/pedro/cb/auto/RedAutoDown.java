@@ -24,51 +24,42 @@ public class RedAutoDown extends OpMode {
 
     //our poses
     private final Pose start = p.of(59, 132, 90);
-    private final Pose shootFirst4 = p.of(59, 132, 90);
     private final Pose flower = p.of(53, 130, 120);
     private final Pose flowerControlPoint = p.of(58, 109, 0);
-    private final Pose shootLast4 = p.of(59, 132, 90);
-    private final Pose shootLast4ControlPoint = p.of(58, 109, 0);
-    private final Pose park = p.of(9, 106, 90);
+    private final Pose shootPollen = p.of(60, 132, 90);
+    private final Pose shootPollenControlPoint = p.of(58, 109, 0);
+    private final Pose park = p.of(9, 112, 90);
     private final Pose parkControlPoint = p.of(60, 109, 0);
 
-    public Path path1() {
-        return line(start, shootFirst4).linear(start, shootFirst4);
+    public Path flower() {
+        return curve(start, flowerControlPoint, flower).linear(start, flower);
     }
 
-    public Path path2() {
-        return curve(shootFirst4, flowerControlPoint, flower).linear(shootFirst4, flower);
+    public Path shootPollen() {
+        return curve(flower, shootPollenControlPoint, shootPollen).linear(flower, shootPollen);
     }
 
-  /*  public Path path3() {
-        return curve(point2, point3Control1, point3).linear(point2, point3);
+    public Path park() {
+        return curve(shootPollen, parkControlPoint, park).constant(park);
     }
 
-    public Path path4() {
-        return curve(point3, point4Control1, point4).constant(point4);
-    }
-
-   */
 
 
-/*
+
+
     private Command autoRoutine() {
         return sequential(
 
                 // Add mechanism commands here.
                 follow(follower, flower()),
                 // Add mechanism commands here.
-                follow(follower, shootingAfterTip()),
+                follow(follower, shootPollen()),
                 // Add mechanism commands here.
-                follow(follower, liningUp()),
-                // Add mechanism commands here.
-                follow(follower, collectingWallPollen()),
-                // Add mechanism commands here.
-                follow(follower, shootingLast4())
-                // Add mechanism commands here.
+                follow(follower, park())
+
         );
     }
-*/
+
     /** This is the main loop of the OpMode, it will run repeatedly after clicking "Play". **/
     @Override
     public void loop(){
@@ -103,7 +94,7 @@ public class RedAutoDown extends OpMode {
      * It runs all the setup actions, including building paths and starting the path system **/
     @Override
     public void start() {
-        //schedule(autoRoutine());
+        schedule(autoRoutine());
         // using the same park path from the last page
     }
 

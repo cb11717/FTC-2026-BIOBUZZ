@@ -18,7 +18,7 @@
       "kind": "atomic",
       "endPoint": {
         "x": 11.7,
-        "y": 55
+        "y": 60
       },
       "controlPoints": [],
       "heading": {
@@ -30,8 +30,15 @@
       }
     },
     {
-      "kind": "atomic",
       "id": "line-mvfvqwfg-yntw64",
+      "color": "#D8856B",
+      "name": "shootingAfterTip",
+      "locked": false,
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": "",
+      "kind": "atomic",
       "endPoint": {
         "x": 56,
         "y": 9
@@ -42,14 +49,7 @@
         "reverse": true,
         "startDeg": -160,
         "endDeg": -90
-      },
-      "color": "#D8856B",
-      "locked": false,
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": "",
-      "name": "shootingAfterTip"
+      }
     },
     {
       "id": "line-muna5e3y-w62pxc",
@@ -239,12 +239,12 @@
     "leftPanelMinWidth": 0,
     "rightPanelMinWidth": 0,
     "penToolMaxPaths": 8,
-    "curveThroughMaxPoints": 4,
     "experimentalFeatures": {
       "optimize": false,
       "curveThrough": false
-    }
+    },
+    "curveThroughMaxPoints": 4
   },
   "version": "1.5.0",
-  "timestamp": "2026-10-19T23:29:11.709Z"
+  "timestamp": "2026-10-24T16:32:46.619Z"
 }

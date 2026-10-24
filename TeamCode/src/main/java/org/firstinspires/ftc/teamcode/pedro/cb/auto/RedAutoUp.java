@@ -26,7 +26,7 @@ public class RedAutoUp extends OpMode {
     private final Pose start = p.of(56, 9, -90); //This is our starting point
     //private final Pose stay = p.of(56, 9, -90); //We want to stay here because we will shoot here next
     //private final Pose shootingFirst3 = p.of(56, 9, -90);//We shoot the first 3 pollen
-    private final Pose flower = p.of(11.7, 55, -160); //Here we go to the flower to get 3 more pollem as we have 1 leftover
+    private final Pose flower = p.of(11.7, 60, -160); //Here we go to the flower to get 3 more pollem as we have 1 leftover
     private final Pose shootingAfterTip = p.of(56, 9, -90); //Here we go back to shoot all 4 after the hive tips
     private final Pose liningUp = p.of(9, 29, -90); //Here we line up with the wall and spline
     private final Pose liningUpControlPoint = p.of(11.8, 48, 0); //This is the control point of the previous spline

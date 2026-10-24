@@ -23,7 +23,7 @@ public class straightTest extends OpMode {
     private final PoseFactory p = PoseFactory.degrees(); // add this
 
     private final Pose start = p.of(24, 8, 90); //This is our starting point
-    private final Pose end24Y = p.of(24, 24, 90);
+    private final Pose end24Y = p.of(24, 56, 90);
 
     public Path straightLineY24() {
         return line(start, end24Y).linear(start, end24Y);
