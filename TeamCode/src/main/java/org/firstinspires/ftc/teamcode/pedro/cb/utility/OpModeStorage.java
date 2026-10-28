@@ -4,5 +4,5 @@ import com.pedropathing.math.Pose;
 
 public class OpModeStorage {
     // Static variable persists in memory between Auto and TeleOp
-    public static Pose autonomousEndPose = null;
+    public static Pose autonomousEndPose = new Pose(0, 0, 0);
 }

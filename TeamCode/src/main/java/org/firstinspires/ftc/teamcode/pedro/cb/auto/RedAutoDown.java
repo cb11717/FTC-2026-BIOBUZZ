@@ -16,9 +16,14 @@ import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.LimelightClusterTracker;
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.OpModeStorage;
 
 @Autonomous(name="RedAutoDown", group="Auto", preselectTeleOp="TeleOpJava")
 public class RedAutoDown extends OpMode {
+
+    private final LimelightClusterTracker vision = new LimelightClusterTracker();
+
     private Follower follower; // you added this before
     private final PoseFactory p = PoseFactory.degrees(); // add this
 
@@ -48,6 +53,7 @@ public class RedAutoDown extends OpMode {
 
 
     private Command autoRoutine() {
+        int clusterCount = vision.getVisibleClusterTagCount();
         return sequential(
 
                 // Add mechanism commands here.
@@ -80,6 +86,7 @@ public class RedAutoDown extends OpMode {
         Scheduler.reset();
 
         follower = Constants.create(hardwareMap);
+        vision.init(hardwareMap, 1, LimelightClusterTracker.RED_OPPOSITE_IDS);
         follower.setPose(start);
         follower.update();
     }
@@ -101,7 +108,9 @@ public class RedAutoDown extends OpMode {
     /** We do not use this because everything should automatically disable **/
     @Override
     public void stop() {
-
+        // Saves the final robot position when Autonomous finishes
+        OpModeStorage.autonomousEndPose = follower.pose();
+        vision.stop();
     }
 
 }
