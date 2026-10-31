@@ -74,6 +74,7 @@ public class RedAutoDown extends OpMode {
         // add your other methods needed in the loop here
 
         telemetry.addData("X", follower.pose().x());
+        telemetry.addData("X", follower.pose().x());
         telemetry.addData("Y", follower.pose().y());
         telemetry.addData("Heading", Math.toDegrees(follower.pose().heading()));
         telemetry.addData("Follower Mode", follower.mode());
@@ -87,6 +88,7 @@ public class RedAutoDown extends OpMode {
 
         follower = Constants.create(hardwareMap);
         vision.init(hardwareMap, 1, LimelightClusterTracker.RED_OPPOSITE_IDS);
+        OpModeStorage.selectedPosition = OpModeStorage.StartingPosition.RED_DOWN;
         follower.setPose(start);
         follower.update();
     }

@@ -1,4 +1,6 @@
 {
+  "version": "2.0.0",
+  "timestamp": "2026-10-31T14:57:33.249Z",
   "startPoint": {
     "x": 80,
     "y": 136,
@@ -93,8 +95,15 @@
       }
     },
     {
-      "kind": "atomic",
       "id": "line-mvmqwhix-c29xn8",
+      "color": "#D8DD99",
+      "name": "ShootingLast4",
+      "locked": false,
+      "waitBeforeMs": 0,
+      "waitAfterMs": 0,
+      "waitBeforeName": "",
+      "waitAfterName": "",
+      "kind": "atomic",
       "endPoint": {
         "x": 80,
         "y": 136
@@ -110,18 +119,18 @@
         "reverse": true,
         "startDeg": 90,
         "endDeg": 90
-      },
-      "color": "#D8DD99",
+      }
+    },
+    {
+      "id": "line-mvmqzxhe-si9h32",
+      "color": "#CBA95B",
+      "name": "Park",
       "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
-      "name": "ShootingLast4"
-    },
-    {
       "kind": "atomic",
-      "id": "line-mvmqzxhe-si9h32",
       "endPoint": {
         "x": 133,
         "y": 48
@@ -137,14 +146,7 @@
         "reverse": true,
         "startDeg": 90,
         "endDeg": 90
-      },
-      "color": "#CBA95B",
-      "locked": false,
-      "waitBeforeMs": 0,
-      "waitAfterMs": 0,
-      "waitBeforeName": "",
-      "waitAfterName": "",
-      "name": "Park"
+      }
     }
   ],
   "shapes": [
@@ -228,42 +230,16 @@
     }
   ],
   "fieldPoints": [],
-  "activePaths": [],
-  "settings": {
-    "xVelocity": 75,
-    "yVelocity": 65,
+  "robot": {
+    "forwardVelocity": 75,
+    "strafeVelocity": 65,
     "aVelocity": 3.141592653589793,
     "kFriction": 0.1,
-    "rWidth": 17.5,
-    "rHeight": 16.5,
+    "rLength": 18,
+    "rWidth": 16.77,
     "safetyMargin": 1,
-    "maxVelocity": 40,
     "maxAcceleration": 30,
-    "maxDeceleration": 30,
-    "fieldMap": "biobuzz.webp",
-    "robotImage": "/robot.png",
-    "showGhostPaths": false,
-    "showOnionLayers": false,
-    "onionLayerSpacing": 3,
-    "onionColor": "#dc2626",
-    "onionNextPointOnly": false,
-    "showHeadingArrow": false,
-    "showCurrentTValue": false,
-    "leftPanelWidth": 242,
-    "rightPanelWidth": 620,
-    "headingArrowLength": 50,
-    "headingArrowColor": "#ffffff",
-    "headingArrowThickness": 2,
-    "pathOpacity": 1,
-    "leftPanelMinWidth": 0,
-    "rightPanelMinWidth": 0,
-    "penToolMaxPaths": 8,
-    "experimentalFeatures": {
-      "optimize": false,
-      "curveThrough": false
-    },
-    "curveThroughMaxPoints": 4
+    "maxDeceleration": 30
   },
-  "version": "1.5.0",
-  "timestamp": "2026-10-24T18:48:36.590Z"
+  "activePaths": []
 }

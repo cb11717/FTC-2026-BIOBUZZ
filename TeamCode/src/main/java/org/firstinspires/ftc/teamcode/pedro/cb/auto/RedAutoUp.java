@@ -107,6 +107,7 @@ public class RedAutoUp extends OpMode {
 
         follower = Constants.create(hardwareMap);
         vision.init(hardwareMap, 1, LimelightClusterTracker.RED_AUDIENCE_IDS);
+        OpModeStorage.selectedPosition = OpModeStorage.StartingPosition.RED_UP;
         follower.setPose(start);
         follower.update();
     }
