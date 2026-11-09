@@ -13,18 +13,20 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
-@Autonomous(name="RedDown_Park", group="Auto", preselectTeleOp="TeleOpJava")
+@Autonomous(name="RedDown_Park", group="Auto", preselectTeleOp="CB111TWOCon")
+
 public class RedDown_Park extends OpMode {
 
     private Follower follower; // you added this before
     private final PoseFactory p = PoseFactory.degrees(); // add this
 
     private final Pose start = p.of(59, 132, 90);
-    private final Pose straightPark = p.of(9, 106, 90);
+    private final Pose straightPark = p.of(10, 117, 90);
     private final Pose straightParkControl1 = p.of(60, 109, 0);
 
     public Path straightPark() {

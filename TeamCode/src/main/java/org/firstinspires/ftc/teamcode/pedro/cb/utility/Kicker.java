@@ -11,7 +11,9 @@ public class Kicker {
 
     private static CRServo NectKick;
     private static CRServo PllnKick;
-
+    private static CRServo PllnKick2;
+    public static int loopCounter = 0;
+    public static String KickerInterrupted ="NO";
 
 
     /**
@@ -24,6 +26,14 @@ public class Kicker {
         NectKick.setDirection(CRServo.Direction.REVERSE);
 
         PllnKick = hardwareMap.get(CRServo.class, "PllnKick");
+        PllnKick2 = hardwareMap.get(CRServo.class, "PllnKick2");
+
+        // Force the REV Hub to initialize PWM signals on these ports during Init:
+        NectKick.setPower(0.0);
+        PllnKick.setPower(0.0);
+        PllnKick2.setPower(0.0);
+
+        KickerInterrupted = "NO";
 
     }
 
@@ -36,11 +46,14 @@ public class Kicker {
                 .setStart(() -> {
                     NectKick.setPower(power);
                     PllnKick.setPower(power);
+                    PllnKick2.setPower(power);
                 })
                 .setExecute(() -> {
                     // Keep refreshing the power during scheduler loops
                     NectKick.setPower(power);
                     PllnKick.setPower(power);
+                    PllnKick2.setPower(power);
+                    loopCounter++;
                 })
                 .setDone(() -> {
                     // Returns false so it never finishes on its own (continuous mechanism)
@@ -48,9 +61,18 @@ public class Kicker {
                 })
                 .setEnd(interrupted -> {
                     // Safety: turns the motor off when the command is interrupted/ended
-                    NectKick.setPower(0);
-                    PllnKick.setPower(0);
+                   // NectKick.setPower(0);
+                    //PllnKick.setPower(0);
+                    KickerInterrupted = "***YES***";
 
                 });
+    }
+
+    public static void forcePower(double power) {
+        if (NectKick != null && PllnKick != null) {
+            NectKick.setPower(power);
+            PllnKick.setPower(power);
+            PllnKick2.setPower(power);
+        }
     }
 }

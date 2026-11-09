@@ -50,6 +50,66 @@ public class Constants {
 
     public static ForesightConfig foresightConfig = new ForesightConfig(
             c -> {
+                Controller primaryTranslationalForward = Controller.proportional(0.23415771225853874);
+                Controller secondaryTranslationalForward = Controller.proportional(0.0865150178702252);
+                Controller primaryTranslationalLateral = Controller.proportional(0.2897721880538852);
+                Controller secondaryTranslationalLateral = Controller.proportional(0.10706308063044358);
+
+                c.forwardTranslational.set(Controller.piecewise(secondaryTranslationalForward).put(2.5, primaryTranslationalForward));
+                c.strafeTranslational.set(Controller.piecewise(secondaryTranslationalLateral).put(2.5, primaryTranslationalLateral));
+
+                c.coast.set(Controller.proportionalFeedforward(0.015339943713126442));
+                c.brake.set(Controller.proportionalFeedforward(0.013038952156157475));
+
+                c.headingFeedback.set(Controller.proportional(3.5145659760504224));
+                c.headingBrakeCoefficients.set(Vector2D.cartesian(0.0357894156412561, 0.009963010045174319));
+
+                c.linearBrakeCoefficients.set(Matrix.diag(0.038407443800360735, 0.05962832844688308));
+                c.quadraticBrakeCoefficients.set(Matrix.diag(0.002708779175670131, 0.0017974587003536885));
+
+                c.maxAchievableForwardVelocity.set(67.048059231102);
+                c.maxAchievableStrafeVelocity.set(49.835655457582405);
+                c.naturalForwardDeceleration.set(36.73699905574329);
+                c.naturalStrafeDeceleration.set(68.91997146753934);
+            }
+    );
+}
+
+/*
+public class Constants {
+    public static Follower create(HardwareMap h) {
+        return new Follower(
+                new PinpointLocalizer(h, localizerConfig),
+                new Mecanum(h, drivetrainConfig),
+                new Foresight(foresightConfig)
+        );
+    }
+
+    public static MecanumConfig drivetrainConfig = new MecanumConfig(c -> {
+        c.frontLeftName.set("LFdrive");
+        c.frontRightName.set("RFdrive");
+        c.backLeftName.set("LBdrive");
+        c.backRightName.set("RBdrive");
+        c.frontLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+        c.frontRightDirection.set(DcMotorSimple.Direction.REVERSE);
+        c.backLeftDirection.set(DcMotorSimple.Direction.FORWARD);
+        c.backRightDirection.set(DcMotorSimple.Direction.REVERSE);
+        c.manualBrakeMode.set(true);
+    });
+
+    public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
+        c.name.set("Pinpoint");
+        c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
+        c.xPodOffset.set(-7.3228);
+        c.yPodOffset.set(+0.5314);
+        c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.REVERSED);
+        c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
+        c.globalDistanceUnit.set(DistanceUnit.INCH);
+        c.offsetUnits.set(DistanceUnit.INCH);
+    });
+
+    public static ForesightConfig foresightConfig = new ForesightConfig(
+            c -> {
                 Controller primaryTranslationalForward = Controller.proportional(0.228525897154759);
                 Controller secondaryTranslationalForward = Controller.proportional(0.08443421267424969);
                 Controller primaryTranslationalLateral = Controller.proportional(0.2416240310565834);
@@ -74,17 +134,7 @@ public class Constants {
             }
     );
 
-   /* public static PinpointConfig localizerConfig = new PinpointConfig(c -> {
-        c.name.set("pinpoint");
-        c.podType.set(GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_4_BAR_POD);
-        c.xPodOffset.set(+6.4153307817113685);
-        c.yPodOffset.set(-2.7755893497016486);
-        c.xPodDirection.set(GoBildaPinpointDriver.EncoderDirection.REVERSED);
-        c.yPodDirection.set(GoBildaPinpointDriver.EncoderDirection.FORWARD);
-        c.globalDistanceUnit.set(DistanceUnit.INCH);
-        c.offsetUnits.set(DistanceUnit.INCH);
-    });
 
-    */
 
 }
+*/

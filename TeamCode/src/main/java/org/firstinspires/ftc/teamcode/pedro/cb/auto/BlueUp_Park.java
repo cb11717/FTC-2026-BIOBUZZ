@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.pedro.cb.auto;
 
 import static com.pedropathing.api.Paths.line;
 import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.groups.Groups.parallel;
+import static com.pedropathing.ivy.groups.Groups.race;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 
@@ -13,29 +16,48 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.Kicker;
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.Shooter;
 
-@Autonomous(name="BlueUp_Park", group="Auto", preselectTeleOp="TeleOpJava")
+@Autonomous(name="BlueUp_Park", group="Auto", preselectTeleOp="CB111TWOCon")
+
 public class BlueUp_Park extends OpMode {
 
+    int TPS_Poll_Wall = 1400;
+    int TPS_Nect_Wall = 1900;
     private Follower follower; // you added this before
     private final PoseFactory p = PoseFactory.degrees(); // add this
 
-    private final Pose start = p.of(80, 136, 90);
-    private final Pose straightPark = p.of(130, 45, 90);
+    private final Pose start = p.of(87.615, 135, 90);
+    private final Pose straightPark = p.of(130, 50, 90);
     private final Pose straightParkControl1 = p.of(160, 110, 0);
     private final Pose straightParkControl2 = p.of(95, 80, 0);
 
     public Path straightPark() {
+
         return Paths.curve(start, straightParkControl1, straightParkControl2, straightPark).linear(start, straightPark);
     }
 
     private Command autoRoutine() {
-        return sequential(
-                // Add mechanism commands here.
-                follow(follower, straightPark())
+        return
+
+                parallel(
+                // 1. MECHANISMS: Run continuously in the background
+                Shooter.run(TPS_Poll_Wall, TPS_Nect_Wall),
+                sequential(
+                        waitMs(4000),           // Spin up shooter for 0.5 seconds
+                        Kicker.run(-1.0)       // Then start the kicker and keep it running
+                ),
+
+                // 2. MOVEMENT: Actions happen while the mechanisms stay on
+                sequential(
+                        waitMs(8500),          // Stay in place for 3 seconds shooting/scoring
+                        follow(follower, straightPark()) // Drive to park while mechanisms are still running
+                )
         );
     }
 
@@ -59,6 +81,8 @@ public class BlueUp_Park extends OpMode {
         Scheduler.reset();
 
         follower = Constants.create(hardwareMap);
+        Shooter.init(hardwareMap);
+        Kicker.init(hardwareMap);
         follower.setPose(start);
         follower.update();
 

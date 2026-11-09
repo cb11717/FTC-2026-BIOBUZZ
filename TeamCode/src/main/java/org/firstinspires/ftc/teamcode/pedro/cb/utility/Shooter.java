@@ -18,26 +18,28 @@ public class Shooter {
     public static void init(HardwareMap hardwareMap) {
         nectarShooterMotor = hardwareMap.get(DcMotor.class, "NectShoot");
         nectarShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+       // ((DcMotorEx) nectarShooterMotor).setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         pollenShooterMotor = hardwareMap.get(DcMotor.class, "PllnShoot");
         pollenShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         pollenShooterMotor.setDirection(DcMotor.Direction.REVERSE);
+       // ((DcMotorEx) pollenShooterMotor).setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /**
      * Reusable command factory to spin the PoolenShooter at a target power.
      * Runs continuously until explicitly cancelled or replaced.
      */
-    public static Command run(double ShooterVel) {
+    public static Command run(double PollShooterVel, double NectShooterVel) {
         return Command.build()
                 .setStart(() -> {
-                    ((DcMotorEx) nectarShooterMotor).setVelocity(ShooterVel);
-                    ((DcMotorEx) pollenShooterMotor).setVelocity(ShooterVel);
+                    ((DcMotorEx) nectarShooterMotor).setVelocity(NectShooterVel);
+                    ((DcMotorEx) pollenShooterMotor).setVelocity(PollShooterVel);
                 })
                 .setExecute(() -> {
                     // Keep refreshing the power during scheduler loops
-                    ((DcMotorEx) nectarShooterMotor).setVelocity(ShooterVel);
-                    ((DcMotorEx) pollenShooterMotor).setVelocity(ShooterVel);
+                    ((DcMotorEx) nectarShooterMotor).setVelocity(NectShooterVel);
+                    ((DcMotorEx) pollenShooterMotor).setVelocity(PollShooterVel);
                 })
                 .setDone(() -> {
                     // Returns false so it never finishes on its own (continuous mechanism)

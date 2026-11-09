@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "timestamp": "2026-10-31T14:55:31.980Z",
+  "timestamp": "2026-11-08T21:45:39.373Z",
   "startPoint": {
     "x": 59,
     "y": 132,
@@ -9,38 +9,17 @@
   },
   "lines": [
     {
-      "id": "line-muslny3d-z7yjut",
-      "color": "#ffc516",
-      "name": "Path 1",
-      "locked": false,
-      "waitBeforeMs": 0,
-      "waitAfterMs": 2000,
-      "waitBeforeName": "",
-      "waitAfterName": "",
-      "kind": "atomic",
-      "endPoint": {
-        "x": 59,
-        "y": 132
-      },
-      "controlPoints": [],
-      "heading": {
-        "type": "linear",
-        "startDeg": 90,
-        "endDeg": 90
-      }
-    },
-    {
       "id": "line-mvfxstot-dtxawr",
       "color": "#D976AC",
       "name": "",
       "locked": false,
       "waitBeforeMs": 0,
-      "waitAfterMs": 2000,
+      "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
       "kind": "atomic",
       "endPoint": {
-        "x": 53,
+        "x": 48,
         "y": 130
       },
       "controlPoints": [
@@ -53,7 +32,7 @@
         "type": "linear",
         "reverse": true,
         "startDeg": 90,
-        "endDeg": 120
+        "endDeg": 90
       }
     },
     {
@@ -62,12 +41,12 @@
       "name": "",
       "locked": false,
       "waitBeforeMs": 0,
-      "waitAfterMs": 2000,
+      "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
       "kind": "atomic",
       "endPoint": {
-        "x": 59,
+        "x": 60,
         "y": 132
       },
       "controlPoints": [
@@ -79,7 +58,7 @@
       "heading": {
         "type": "linear",
         "reverse": true,
-        "startDeg": 120,
+        "startDeg": 90,
         "endDeg": 90
       }
     },
@@ -94,8 +73,8 @@
       "waitAfterName": "",
       "kind": "atomic",
       "endPoint": {
-        "x": 9,
-        "y": 106
+        "x": 10,
+        "y": 117
       },
       "controlPoints": [
         {
@@ -169,10 +148,6 @@
     }
   ],
   "sequence": [
-    {
-      "kind": "path",
-      "lineId": "line-muslny3d-z7yjut"
-    },
     {
       "kind": "path",
       "lineId": "line-mvfxstot-dtxawr"

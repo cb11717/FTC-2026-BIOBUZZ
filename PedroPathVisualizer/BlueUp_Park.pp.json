@@ -1,9 +1,9 @@
 {
   "version": "2.0.0",
-  "timestamp": "2026-10-31T14:36:17.322Z",
+  "timestamp": "2026-10-31T16:44:24.626Z",
   "startPoint": {
-    "x": 80,
-    "y": 136,
+    "x": 87.615,
+    "y": 135,
     "locked": false,
     "headingDeg": 90
   },
@@ -20,7 +20,7 @@
       "kind": "atomic",
       "endPoint": {
         "x": 130,
-        "y": 45
+        "y": 50
       },
       "controlPoints": [
         {

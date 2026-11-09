@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "timestamp": "2026-10-31T14:56:14.621Z",
+  "timestamp": "2026-11-08T21:24:44.019Z",
   "startPoint": {
     "x": 56,
     "y": 9,
@@ -20,14 +20,14 @@
       "kind": "atomic",
       "endPoint": {
         "x": 11.7,
-        "y": 60
+        "y": 48
       },
       "controlPoints": [],
       "heading": {
         "type": "linear",
         "reverse": false,
         "startDeg": -90,
-        "endDeg": -160,
+        "endDeg": -180,
         "degrees": 0
       }
     },
@@ -45,11 +45,16 @@
         "x": 56,
         "y": 9
       },
-      "controlPoints": [],
+      "controlPoints": [
+        {
+          "x": 39,
+          "y": 38
+        }
+      ],
       "heading": {
         "type": "linear",
         "reverse": true,
-        "startDeg": -160,
+        "startDeg": -180,
         "endDeg": -90
       }
     },

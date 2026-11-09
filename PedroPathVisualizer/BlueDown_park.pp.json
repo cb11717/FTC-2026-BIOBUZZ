@@ -1,15 +1,15 @@
 {
   "version": "2.0.0",
-  "timestamp": "2026-10-31T15:26:11.505Z",
+  "timestamp": "2026-11-01T21:19:11.402Z",
   "startPoint": {
     "x": 84,
-    "y": 8,
+    "y": 9,
     "locked": false,
     "headingDeg": 90
   },
   "lines": [
     {
-      "id": "line-mvwilzxe-lth4se",
+      "id": "line-mvwjg07g-2u0qwj",
       "color": "#ffc516",
       "name": "StraightPark",
       "locked": false,
@@ -19,19 +19,19 @@
       "waitAfterName": "",
       "kind": "atomic",
       "endPoint": {
-        "x": 130,
+        "x": 128,
         "y": 22
       },
       "controlPoints": [
         {
-          "x": 68,
-          "y": 38
+          "x": 76,
+          "y": 34
         }
       ],
       "heading": {
         "type": "linear",
-        "startDeg": -90,
-        "endDeg": -90
+        "startDeg": 90,
+        "endDeg": 90
       }
     }
   ],
@@ -200,7 +200,7 @@
   "sequence": [
     {
       "kind": "path",
-      "lineId": "line-mvwilzxe-lth4se"
+      "lineId": "line-mvwjg07g-2u0qwj"
     }
   ],
   "fieldPoints": [],
