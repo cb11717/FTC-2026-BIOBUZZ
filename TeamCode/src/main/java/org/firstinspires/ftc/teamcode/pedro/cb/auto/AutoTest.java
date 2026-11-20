@@ -31,7 +31,7 @@ import org.firstinspires.ftc.teamcode.pedro.cb.utility.TelemetryUtil;
 import static com.pedropathing.api.Paths.*;
 
 @Autonomous(name="AutoTest", group="Auto", preselectTeleOp="TeleOpJava")
-
+@Disabled
 public class AutoTest extends OpMode {
 
     int TPS_Poll_Wall = 2000;
@@ -52,13 +52,27 @@ public class AutoTest extends OpMode {
 
 
     private Command autoRoutine() {
+
+        if (vision.getVisibleClusterTagCount() > 0){
+            telemetry.addData("**FOUND APRIL TAG**", "");
+            telemetry.update();
+        }else {
+            telemetry.addData("NO APRIL TAG", "");
+            telemetry.update();
+        }
+
         return sequential(
 
+                Intake.run(0.6)
+
+                /*
                 race(
 
-                        Plow.run(0), //0 means the plow is up and 1 is Plow mode
-                        waitMs(15000)
+                        Kicker.run(-1,-1),
+                        waitMs(10000)
                 )
+
+                 */
 /*
                 race(
                         waitUntil(() -> {
@@ -130,13 +144,15 @@ public class AutoTest extends OpMode {
         // add your other methods needed in the loop here
 
 
-
+/*
         telemetry.addData("X", follower.pose().x());
         telemetry.addData("Y", follower.pose().y());
         telemetry.addData("Heading", Math.toDegrees(follower.pose().heading()));
         telemetry.addData("Follower Mode", follower.mode());
         telemetry.addData("Kicker Loop Count", Kicker.loopCounter);
         telemetry.addData("Kicker Interrupted", Kicker.KickerInterrupted);
+
+ */
 
         telemetry.update();
     }
@@ -157,7 +173,7 @@ public class AutoTest extends OpMode {
         Plow.init(hardwareMap);
 
         //Blue Auto Down
-        vision.init(hardwareMap, 1, LimelightClusterTracker.BLUE_AUDIENCE_IDS);
+        vision.init(hardwareMap, 1, LimelightClusterTracker.BLUE_AUDIENCE_IDS, telemetry);
         // --- INITIALIZE TELEMETRY UTILITY HERE ---
         TelemetryUtil.init(telemetry);
 

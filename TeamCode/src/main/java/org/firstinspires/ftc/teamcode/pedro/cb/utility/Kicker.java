@@ -23,17 +23,18 @@ public class Kicker {
     public static void init(HardwareMap hardwareMap) {
 
         NectKick = hardwareMap.get(CRServo.class, "NectKick");
-        NectKick.setDirection(CRServo.Direction.REVERSE);
 
         PllnKick = hardwareMap.get(CRServo.class, "PllnKick");
         PllnKick2 = hardwareMap.get(CRServo.class, "PllnKick2");
+        PllnKick.setDirection(CRServo.Direction.REVERSE);
+        PllnKick2.setDirection(CRServo.Direction.REVERSE);
+
 
         // Force the REV Hub to initialize PWM signals on these ports during Init:
         NectKick.setPower(0.0);
         PllnKick.setPower(0.0);
         PllnKick2.setPower(0.0);
-
-        KickerInterrupted = "NO";
+        KickerInterrupted = "***YES***";
 
     }
 
@@ -41,18 +42,18 @@ public class Kicker {
      * Reusable command factory to spin the PoolenShooter at a target power.
      * Runs continuously until explicitly cancelled or replaced.
      */
-    public static Command run(double power) {
+    public static Command run(double NectPower, double PollPower) {
         return Command.build()
                 .setStart(() -> {
-                    NectKick.setPower(power);
-                    PllnKick.setPower(power);
-                    PllnKick2.setPower(power);
+                    NectKick.setPower(NectPower);
+                    PllnKick2.setPower(PollPower);
+                    PllnKick.setPower(0.5 * PllnKick2.getPower());
                 })
                 .setExecute(() -> {
                     // Keep refreshing the power during scheduler loops
-                    NectKick.setPower(power);
-                    PllnKick.setPower(power);
-                    PllnKick2.setPower(power);
+                    NectKick.setPower(NectPower);
+                    PllnKick2.setPower(PollPower);
+                    PllnKick.setPower(0.5 * PllnKick2.getPower());
                     loopCounter++;
                 })
                 .setDone(() -> {

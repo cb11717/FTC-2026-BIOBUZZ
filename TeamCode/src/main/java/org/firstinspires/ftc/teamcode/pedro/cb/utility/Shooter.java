@@ -23,6 +23,8 @@ public class Shooter {
         pollenShooterMotor = hardwareMap.get(DcMotor.class, "PllnShoot");
         pollenShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         pollenShooterMotor.setDirection(DcMotor.Direction.REVERSE);
+        //NectShoot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //PllnShoot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
        // ((DcMotorEx) pollenShooterMotor).setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
@@ -38,7 +40,7 @@ public class Shooter {
                 })
                 .setExecute(() -> {
                     // Keep refreshing the power during scheduler loops
-                    ((DcMotorEx) nectarShooterMotor).setVelocity(NectShooterVel);
+                   ((DcMotorEx) nectarShooterMotor).setVelocity(NectShooterVel);
                     ((DcMotorEx) pollenShooterMotor).setVelocity(PollShooterVel);
                 })
                 .setDone(() -> {

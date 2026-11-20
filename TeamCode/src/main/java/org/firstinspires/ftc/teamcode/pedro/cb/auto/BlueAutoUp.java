@@ -21,6 +21,7 @@ import com.pedropathing.ivy.Command;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.groups.Groups.sequential;
+import static com.pedropathing.ivy.commands.Commands.*;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Gate;
@@ -33,32 +34,28 @@ import org.firstinspires.ftc.teamcode.pedro.cb.utility.Separator;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Shooter;
 
 @Autonomous(name="BlueAutoUp", group="Auto", preselectTeleOp="TeleOpJava")
-@Disabled
+@Disabled // Uncomment when ready to test
 public class BlueAutoUp extends OpMode {
 
-    int TPS_Poll_Wall = 1500;
+    int TPS_Poll_Wall = 1520;
     int TPS_Nect_Wall = 1900;
     private boolean tagFound = false;
 
     private final LimelightClusterTracker vision = new LimelightClusterTracker();
 
-    private Follower follower; // you added this before
-    private final PoseFactory poseFactory  = PoseFactory.degrees(); // add this
+    private Follower follower;
+    private final PoseFactory poseFactory  = PoseFactory.degrees();
 
     private final Pose start = poseFactory.of(80, 136, 90);
-    private final Pose flower = poseFactory.of(130, 96, 0);
-    private final Pose flowerControl1 = poseFactory.of(120, 95, 0);
-    //private final Pose shootPollen1Start = poseFactory.of(130, 90, 20);
+    private final Pose flower = poseFactory.of(126, 96, 0);
+    private final Pose flowerControl1 = poseFactory.of(105, 95, 0);
     private final Pose shootPollen1 = poseFactory.of(80, 136, 90);
     private final Pose shootPollen1Control1 = poseFactory.of(120, 95, 0);
-    //private final Pose collectingWallPollenStart = poseFactory.of(80, 136, 90);
     private final Pose collectingWallPollen = poseFactory.of(135, 136, 90);
     private final Pose collectingWallPollenControl1 = poseFactory.of(125, 100, 0);
     private final Pose collectingWallPollenControl2 = poseFactory.of(135, 120, 0);
-    //private final Pose shootingLast4Start = poseFactory.of(135, 136, 90);
     private final Pose shootingLast4 = poseFactory.of(80, 136, 90);
     private final Pose shootingLast4Control1 = poseFactory.of(100, 110, 0);
-    //private final Pose parkStart = poseFactory.of(80, 136, 90);
     private final Pose park = poseFactory.of(130, 50, 90);
     private final Pose parkControl1 = poseFactory.of(160, 110, 0);
     private final Pose parkControl2 = poseFactory.of(95, 80, 0);
@@ -84,98 +81,132 @@ public class BlueAutoUp extends OpMode {
     }
 
     private Command autoRoutine() {
-
-        int clusterCount = vision.getVisibleClusterTagCount();
-        return sequential(
-
+        return parallel(
+                // 1. Background shooter flywheels (runs for the entire match)
                 Shooter.run(TPS_Poll_Wall, TPS_Nect_Wall),
+
                 sequential(
-                        waitMs(500),           // Spin up shooter for 0.5 seconds
-                        Kicker.run(-1.0)       // Then start the kicker and keep it running
-                ),
-                race(
-                        parallel(
-                                Shooter.run(TPS_Poll_Wall, TPS_Nect_Wall),
-                                Kicker.run(-1.0)
-                        ),
-                        waitMs(3000)
-                ),
-
-                parallel(
-                    Plow.run(1), //Plow mode
-                    follow(follower, flower())
-                ),
-                //pick from flower
-                race(
-                        parallel(
-                                Intake.run(1)
-                               // Gate.run(1),
-                                //Separator.run(1)
-                        ),
-                        waitMs(3000)
-                ),
-
-                parallel(
-                        Plow.run(0),
-                        follow(follower, shootPollen1())
-                    ),
-
-                // 1. Race: Wait up to 15 seconds for the AprilTag to appear
-                race(
-                        waitUntil(() -> {
-                            if (vision.getVisibleClusterTagCount() > 0) {
-                                this.tagFound = true;
-                                return true; // Ends the race early if tag is seen!
-                            }
-                            return false;
-                        }),
-                        waitMs(15000) // 15-second timeout fallback
-                ),
-                // 2. Conditional: If tag was found within 15s, run program. Else, park.
-                conditional(
-                        () -> this.tagFound,
-                        sequential(
-                                race(
-                                        parallel(
-                                                Shooter.run(TPS_Poll_Wall, TPS_Nect_Wall),
-                                                Kicker.run(-1.0)
-                                        ),
-                                        waitMs(3000)
-                                ),
-                                follow(follower, collectingWallPollen()),
-                                race(
-                                        parallel(
-                                                Intake.run(0.75)
-                                                //Gate.run(1),
-                                                //Separator.run(1)
-                                        ),
-                                        waitMs(3000)
-                                ),
-                                follow(follower, shootingLast4()),
-                                race(
-                                        parallel(
-                                                Shooter.run(TPS_Poll_Wall, TPS_Nect_Wall),
-                                                Kicker.run(-1.0)
-                                        ),
-                                        waitMs(3000)
-                                ),
-                                follow(follower, park())
-                        ),
-                        // FALSE: Timed out (no tag seen in 15s), just park safely
-                        sequential(
+                        // --- PHASE 1: INITIAL SPIN-UP WAIT & SHOOT ---
+                        waitMs(5500), // Spin up shooter for 5.5 seconds
+                        race(
                                 parallel(
-                                        follow(follower, park()),
-                                        Shooter.run(0,0),
-                                        Kicker.run(0),
-                                        Intake.run(0)
-                                        //Gate.run(0),
-                                       // Separator.run(0)
+                                        Kicker.run(-0.7, -1.0)
+                                ),
+                                waitMs(3500)
+                        ),
+                        // SAFETY: Explicitly stop kicker before driving
+                        race(
+                                Kicker.run(0, 0),
+                                waitMs(50)
+                        ),
+
+                        // --- PHASE 2 & 3: INTAKE & FLOWER COLLECTION WITH PLOW WIGGLE ---
+                        race(
+                                Intake.run(-1.0),
+                                sequential(
+                                        // Drive to flower with plow down
+                                        parallel(
+                                                Plow.run(0.93),
+                                                follow(follower, flower())
+                                        ),
+                                        // 3-second plow wiggle at the flower
+                                        race(
+                                                sequential(
+                                                        Plow.run(0.8),
+                                                        waitMs(250),
+                                                        Plow.run(0.93),
+                                                        waitMs(250),
+                                                        Plow.run(0.8),
+                                                        waitMs(250),
+                                                        Plow.run(0.93),
+                                                        waitMs(250),
+                                                        Plow.run(0.8),
+                                                        waitMs(250),
+                                                        Plow.run(0.93),
+                                                        waitMs(250),
+                                                        Plow.run(0.8),
+                                                        waitMs(250),
+                                                        Plow.run(0.93)
+                                                ),
+                                                waitMs(3000)
+                                        ),
+                                        // Retract plow and drive back to shooting position
+                                        parallel(
+                                                Plow.run(0),
+                                                follow(follower, shootPollen1())
+                                        )
+                                )
+                        ),
+                        // SAFETY: Stop intake safely
+                        race(
+                                Intake.run(0),
+                                waitMs(50)
+                        ),
+
+                        // --- PHASE 4: LIMELIGHT APRILTAG DETECTION (10s Timeout) ---
+                        race(
+                                waitUntil(() -> {
+                                    if (vision.getVisibleClusterTagCount() > 0) {
+                                        this.tagFound = true;
+                                        return true; // Ends race early if tag is detected
+                                    }
+                                    return false;
+                                }),
+                                waitMs(10000) // 10-second fallback timer
+                        ),
+
+                        // --- PHASE 5: CONDITIONAL ROUTINE ---
+                        conditional(
+                                () -> this.tagFound,
+                                // OPTION A: Tag Found within 10 seconds
+                                sequential(
+                                        // First shot sequence after tip
+                                        race(
+                                                parallel(
+                                                        Kicker.run(-0.7, -1.0)
+                                                ),
+                                                waitMs(3000)
+                                        ),
+                                        // SAFETY: Stop kicker
+                                        race(
+                                                Kicker.run(0, 0),
+                                                waitMs(50)
+                                        ),
+                                        follow(follower, collectingWallPollen()),
+                                        // Intake collection of wall pollen
+                                        race(
+                                                parallel(
+                                                        Intake.run(-1)
+                                                ),
+                                                waitMs(3000)
+                                        ),
+                                        // SAFETY: Stop intake
+                                        race(
+                                                Intake.run(0),
+                                                waitMs(50)
+                                        ),
+                                        follow(follower, shootingLast4()),
+                                        // Final shot sequence
+                                        race(
+                                                parallel(
+                                                        Kicker.run(-0.7, -1.0)
+                                                ),
+                                                waitMs(3000)
+                                        ),
+                                        // SAFETY: Stop kicker
+                                        race(
+                                                Kicker.run(0, 0),
+                                                waitMs(50)
+                                        ),
+                                        follow(follower, park())
+                                ),
+                                // OPTION B: Timed out -> Drive directly to park
+                                sequential(
+                                        follow(follower, park())
                                 )
                         )
                 )
-
         );
-
     }
 
     /** This is the main loop of the OpMode, it will run repeatedly after clicking "Play". **/
@@ -183,12 +214,15 @@ public class BlueAutoUp extends OpMode {
     public void loop(){
         follower.update();
         Scheduler.execute();
-        // add your other methods needed in the loop here
 
         telemetry.addData("X", follower.pose().x());
         telemetry.addData("Y", follower.pose().y());
         telemetry.addData("Heading", Math.toDegrees(follower.pose().heading()));
         telemetry.addData("Follower Mode", follower.mode());
+        telemetry.addData("LL Total Tags Seen", vision.getTotalVisibleTagCount());
+        telemetry.addData("LL Raw Tag IDs", vision.getVisibleTagIdsString());
+        telemetry.addData("LL Cluster Matches", vision.getVisibleClusterTagCount());
+        telemetry.addData("Tag Found?", this.tagFound);
         telemetry.update();
     }
 
@@ -198,7 +232,7 @@ public class BlueAutoUp extends OpMode {
         Scheduler.reset();
 
         follower = Constants.create(hardwareMap);
-        vision.init(hardwareMap, 1, LimelightClusterTracker.BLUE_OPPOSITE_IDS);
+        vision.init(hardwareMap, 3, LimelightClusterTracker.BLUE_OPPOSITE_IDS, telemetry);
         OpModeStorage.selectedPosition = OpModeStorage.StartingPosition.BLUE_UP;
         follower.setPose(start);
         follower.update();
@@ -212,23 +246,22 @@ public class BlueAutoUp extends OpMode {
     /** This method is called continuously after Init while waiting for "play". **/
     @Override
     public void init_loop() {
-
+        telemetry.addData("LL Total Tags Seen", vision.getTotalVisibleTagCount());
+        telemetry.addData("LL Raw Tag IDs", vision.getVisibleTagIdsString());
+        telemetry.addData("LL Cluster Matches", vision.getVisibleClusterTagCount());
+        telemetry.update();
     }
 
-    /** This method is called once at the start of the OpMode.
-     * It runs all the setup actions, including building paths and starting the path system **/
+    /** This method is called once at the start of the OpMode. **/
     @Override
     public void start() {
+        this.tagFound = false;
         schedule(autoRoutine());
-        // using the same park path from the last page
     }
 
-    /** We do not use this because everything should automatically disable **/
     @Override
     public void stop() {
-        // Saves the final robot position when Autonomous finishes
         OpModeStorage.autonomousEndPose = follower.pose();
         vision.stop();
     }
-
 }

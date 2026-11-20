@@ -7,6 +7,12 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.List;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.TelemetryUtil;
+
+import java.util.List;
+
 public class LimelightClusterTracker {
 
     private Limelight3A limelight;
@@ -23,7 +29,7 @@ public class LimelightClusterTracker {
    //Blue Up initial - pipeline 3
     public static final int[] BLUE_OPPOSITE_IDS = {42, 43, 44, 45}; // Pipeline 3
 
-    public void init(HardwareMap hardwareMap, int pipelineIndex, int[] targetClusterIds) {
+    public void init(HardwareMap hardwareMap, int pipelineIndex, int[] targetClusterIds, Telemetry telemetry) {
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
         this.activeClusterIds = targetClusterIds;
 
@@ -68,6 +74,28 @@ public class LimelightClusterTracker {
         if (limelight != null) {
             limelight.stop();
         }
+    }
+
+    // Add this method to LimelightClusterTracker.java
+    public String getVisibleTagIdsString() {
+        LLResult result = limelight.getLatestResult();
+        if (result == null || !result.isValid()) {
+            return "No valid result";
+        }
+
+        List<LLResultTypes.FiducialResult> visibleTags = result.getFiducialResults();
+        if (visibleTags.isEmpty()) {
+            return "None in view";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < visibleTags.size(); i++) {
+            sb.append(visibleTags.get(i).getFiducialId());
+            if (i < visibleTags.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
     }
 }
 
