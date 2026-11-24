@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Kicker;
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.OpModeStorage;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Shooter;
 
 @Autonomous(name="BlueUp_Park", group="Auto", preselectTeleOp="CB112TWOCon10nov261748")
@@ -77,6 +78,7 @@ public class BlueUp_Park extends OpMode {
         follower = Constants.create(hardwareMap);
         Shooter.init(hardwareMap);
         Kicker.init(hardwareMap);
+        OpModeStorage.selectedPosition = OpModeStorage.StartingPosition.BLUE_UP;
         follower.setPose(start);
         follower.update();
     }
@@ -92,5 +94,6 @@ public class BlueUp_Park extends OpMode {
 
     @Override
     public void stop() {
+        OpModeStorage.autonomousEndPose = follower.pose();
     }
 }

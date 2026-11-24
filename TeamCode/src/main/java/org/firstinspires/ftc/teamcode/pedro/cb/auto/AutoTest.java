@@ -26,15 +26,17 @@ import org.firstinspires.ftc.teamcode.pedro.cb.utility.LimelightClusterTracker;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Plow;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Separator;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Shooter;
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.ShooterPIDF;
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.ShooterUtils;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.TelemetryUtil;
 
 import static com.pedropathing.api.Paths.*;
 
 @Autonomous(name="AutoTest", group="Auto", preselectTeleOp="TeleOpJava")
-@Disabled
+
 public class AutoTest extends OpMode {
 
-    int TPS_Poll_Wall = 2000;
+    int TPS_Poll_Wall = 1590;
     int TPS_Nect_Wall = 1900;
     private boolean tagFound = false;
 
@@ -53,6 +55,71 @@ public class AutoTest extends OpMode {
 
     private Command autoRoutine() {
 
+
+      // Shooter.setPower(0.5);
+        return parallel(
+                ShooterPIDF.run(TPS_Poll_Wall, 0.0),
+                sequential(
+                        waitMs(3000),
+                        parallel(
+                                Intake.run(-1.0),
+                                Kicker.run(0, -1.0),
+                                waitMs(4000)
+                        )
+
+                )
+
+        );
+
+
+
+/*
+        return parallel(
+           ShooterPIDF.run(TPS_Poll_Wall, 0.0),
+           // Shooter.run(TPS_Poll_Wall, TPS_Nect_Wall),
+             sequential(
+                     waitMs(3000), // Initial spin-up
+
+                     // Ball 1
+                     parallel(
+                             Intake.run(-1.0),
+                             Kicker.run(0, -1.0),
+                             ShooterUtils.waitForPollenRecovery(TPS_Poll_Wall)
+                     ),
+                     waitMs(250),
+                     waitUntil(() -> ShooterPIDF.getPollenVelocity() >= (TPS_Poll_Wall - 20)),
+
+                     // Ball 2
+                     parallel(
+                             Intake.run(-1.0),
+                             Kicker.run(0, -1.0),
+                             ShooterUtils.waitForPollenRecovery(TPS_Poll_Wall)
+                     ),
+                     waitMs(250),
+                     waitUntil(() -> ShooterPIDF.getPollenVelocity() >= (TPS_Poll_Wall - 20)),
+                     // Ball 3
+                     parallel(
+                             Intake.run(-1.0),
+                             Kicker.run(0, -1.0),
+                             ShooterUtils.waitForPollenRecovery(TPS_Poll_Wall) // slightly longer settle before ball 4
+                     ),
+                     waitMs(250),
+                     waitUntil(() -> ShooterPIDF.getPollenVelocity() >= (TPS_Poll_Wall - 20)),
+                     // Ball 4
+                     parallel(
+                             Intake.run(-1.0),
+                             Kicker.run(0, -1.0),
+                             waitMs(1500)
+                     )
+             )
+        );
+
+*/
+
+
+
+
+        /*
         if (vision.getVisibleClusterTagCount() > 0){
             telemetry.addData("**FOUND APRIL TAG**", "");
             telemetry.update();
@@ -61,78 +128,9 @@ public class AutoTest extends OpMode {
             telemetry.update();
         }
 
-        return sequential(
+         */
 
-                Intake.run(0.6)
 
-                /*
-                race(
-
-                        Kicker.run(-1,-1),
-                        waitMs(10000)
-                )
-
-                 */
-/*
-                race(
-                        waitUntil(() -> {
-                            if (vision.getVisibleClusterTagCount() > 0) {
-                                this.tagFound = true;
-                                return true; // Ends the race early if tag is seen!
-                            }
-                            return false;
-                        }),
-                        waitMs(15000) // 15-second timeout fallback
-                ),
-
-                // 2. Conditional: If tag was found within 15s, run program. Else, park.
-                conditional(
-
-                        () -> this.tagFound,
-                        // TRUE: Full scoring routine
-                        sequential(
-                                TelemetryUtil.log("AprilTag" ,"***FOUND APRIL TAG***"),
-                                waitMs(1000)
-                        ),
-                        // FALSE
-                        sequential (
-                                TelemetryUtil.log("AprilTag" ,"NO"),
-                                waitMs(1000)
-                        )
-                )
-*/
-                //Kicker.run(-1.0)
-                /*
-                race(
-
-                        Kicker.run(0.5),
-                        waitMs(15000)
-                )
-
-                */
-                /*
-                // Add mechanism commands here.
-                follow(follower, straightLineY24()),
-                // 2. Run Intake, Gate, and Separator for 1 second, then stop them automatically
-                race(
-                        parallel(
-                                Intake.run(0.75),
-                                Gate.run(1),
-                                Separator.run(1)
-                        ),
-                        waitMs(3000)
-                ),
-                race(
-                    parallel(
-                        Shooter.run(TPS_Poll_Wall, TPS_Nect_Wall),
-                        Kicker.run(-1),
-                        Separator.run(1),
-                        Gate.run(0)
-                    ),
-                    waitMs(3000)
-                )
-                */
-        );
     }
 
     @Override
@@ -154,6 +152,9 @@ public class AutoTest extends OpMode {
 
  */
 
+        telemetry.addData("Pollen Target TPS", TPS_Poll_Wall);
+        telemetry.addData("Pollen Actual TPS", ShooterPIDF.getPollenVelocity());
+        telemetry.addData("Pollen Current (A)", ShooterPIDF.getPollenCurrentAmps());
         telemetry.update();
     }
 
@@ -169,7 +170,8 @@ public class AutoTest extends OpMode {
         //Separator.init(hardwareMap);
         Intake.init(hardwareMap);
         Kicker.init(hardwareMap);
-        Shooter.init(hardwareMap);
+       //Shooter.init(hardwareMap);
+        ShooterPIDF.init(hardwareMap);
         Plow.init(hardwareMap);
 
         //Blue Auto Down

@@ -34,7 +34,7 @@ import org.firstinspires.ftc.teamcode.pedro.cb.utility.Separator;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Shooter;
 
 @Autonomous(name="BlueAutoUp", group="Auto", preselectTeleOp="TeleOpJava")
-@Disabled // Uncomment when ready to test
+//@Disabled // Uncomment when ready to test
 public class BlueAutoUp extends OpMode {
 
     int TPS_Poll_Wall = 1520;
@@ -47,11 +47,11 @@ public class BlueAutoUp extends OpMode {
     private final PoseFactory poseFactory  = PoseFactory.degrees();
 
     private final Pose start = poseFactory.of(80, 136, 90);
-    private final Pose flower = poseFactory.of(126, 96, 0);
+    private final Pose flower = poseFactory.of(121.5, 96, 0);
     private final Pose flowerControl1 = poseFactory.of(105, 95, 0);
     private final Pose shootPollen1 = poseFactory.of(80, 136, 90);
     private final Pose shootPollen1Control1 = poseFactory.of(120, 95, 0);
-    private final Pose collectingWallPollen = poseFactory.of(135, 136, 90);
+    private final Pose collectingWallPollen = poseFactory.of(127, 135, 90);
     private final Pose collectingWallPollenControl1 = poseFactory.of(125, 100, 0);
     private final Pose collectingWallPollenControl2 = poseFactory.of(135, 120, 0);
     private final Pose shootingLast4 = poseFactory.of(80, 136, 90);
@@ -112,19 +112,19 @@ public class BlueAutoUp extends OpMode {
                                         // 3-second plow wiggle at the flower
                                         race(
                                                 sequential(
-                                                        Plow.run(0.8),
+                                                        Plow.run(0.85),
                                                         waitMs(250),
                                                         Plow.run(0.93),
                                                         waitMs(250),
-                                                        Plow.run(0.8),
+                                                        Plow.run(0.85),
                                                         waitMs(250),
                                                         Plow.run(0.93),
                                                         waitMs(250),
-                                                        Plow.run(0.8),
+                                                        Plow.run(0.85),
                                                         waitMs(250),
                                                         Plow.run(0.93),
                                                         waitMs(250),
-                                                        Plow.run(0.8),
+                                                        Plow.run(0.9),
                                                         waitMs(250),
                                                         Plow.run(0.93)
                                                 ),

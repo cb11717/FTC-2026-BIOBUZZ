@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+
 public class Shooter {
 
     // Static reference to the motor
@@ -18,14 +20,14 @@ public class Shooter {
     public static void init(HardwareMap hardwareMap) {
         nectarShooterMotor = hardwareMap.get(DcMotor.class, "NectShoot");
         nectarShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-       // ((DcMotorEx) nectarShooterMotor).setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+       ((DcMotorEx) nectarShooterMotor).setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         pollenShooterMotor = hardwareMap.get(DcMotor.class, "PllnShoot");
         pollenShooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         pollenShooterMotor.setDirection(DcMotor.Direction.REVERSE);
-        //NectShoot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        //PllnShoot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-       // ((DcMotorEx) pollenShooterMotor).setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+       ((DcMotorEx) pollenShooterMotor).setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     /**
@@ -53,4 +55,27 @@ public class Shooter {
                     pollenShooterMotor.setPower(0.0);
                 });
     }
+
+    public static double getPollenVelocity() {
+        if (pollenShooterMotor instanceof DcMotorEx) {
+            return ((DcMotorEx) pollenShooterMotor).getVelocity();
+        }
+        return 0.0;
+    }
+
+    public static double getPollenCurrentAmps() {
+        if (pollenShooterMotor instanceof DcMotorEx) {
+            return ((DcMotorEx) pollenShooterMotor).getCurrent(CurrentUnit.AMPS);
+        }
+        return 0.0;
+    }
+
+    //used only for test purpose to tune the PIDF
+    public static void setPower(double power) {
+        if (pollenShooterMotor instanceof DcMotorEx) {
+            pollenShooterMotor.setPower(power);
+        }
+        return;
+    }
+
 }

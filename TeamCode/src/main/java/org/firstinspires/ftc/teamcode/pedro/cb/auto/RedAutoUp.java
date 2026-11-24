@@ -34,7 +34,7 @@ import org.firstinspires.ftc.teamcode.pedro.cb.utility.Separator;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Shooter;
 
 @Autonomous(name="RedAutoUp", group="Auto", preselectTeleOp="TeleOpJava")
-@Disabled // Uncomment when ready to test
+//@Disabled // Uncomment when ready to test
 public class RedAutoUp extends OpMode {
 
     int TPS_Poll_Wall = 1520;
@@ -48,19 +48,20 @@ public class RedAutoUp extends OpMode {
 
     // Our poses
     private final Pose start = p.of(56, 9, -90);
-    private final Pose flower = p.of(15, 50, -180);
+    private final Pose flower = p.of(15, 46, -180);
     private final Pose shootingAfterTip = p.of(56, 9, -90);
     private final Pose shootingAfterTipControlPoint = p.of(39, 38, 0);
-    private final Pose liningUp = p.of(9, 29, -90);
-    private final Pose liningUpControlPoint = p.of(11.8, 48, 0);
-    private final Pose collectingWallPollen = p.of(10, 10, -90);
+
+    private final Pose collectingControlPoint = p.of(12, 48, 0);
+    private final Pose collectingWallPollen = p.of(9, 9, -90);
     private final Pose shootingLast4 = p.of(56, 9, -90);
-    private final Pose shootingLast4ControlPoint = p.of(11.8, 48, 0);
+    private final Pose shootingLast4ControlPoint = p.of(12, 48, 0);
     private final Pose Park = p.of(12, 92, -90);
     private final Pose ParkControl1 = p.of(18, 8, 0);
 
     // Single direct path to the flower
     public Path flower() {
+
         return line(start, flower).linear(start, flower);
     }
 
@@ -68,14 +69,16 @@ public class RedAutoUp extends OpMode {
         return curve(flower, shootingAfterTipControlPoint, shootingAfterTip).linear(flower, shootingAfterTip);
     }
 
-    public Path liningUp() {
-        return curve(shootingAfterTip, liningUpControlPoint, liningUp).linear(shootingAfterTip, liningUp);
+    public Path collectingWallPollen() {
+        return curve(shootingAfterTip, collectingControlPoint, collectingWallPollen).linear(shootingAfterTip, collectingWallPollen);
     }
 
+
+/*
     public Path collectingWallPollen() {
         return line(liningUp, collectingWallPollen).linear(liningUp, collectingWallPollen);
     }
-
+*/
     public Path shootingLast4() {
         return curve(collectingWallPollen, shootingLast4ControlPoint, shootingLast4).linear(collectingWallPollen, shootingLast4);
     }
@@ -120,15 +123,15 @@ public class RedAutoUp extends OpMode {
                                                         waitMs(250),
                                                         Plow.run(0.93),
                                                         waitMs(250),
-                                                        Plow.run(0.8),
+                                                        Plow.run(0.85),
                                                         waitMs(250),
                                                         Plow.run(0.93),
                                                         waitMs(250),
-                                                        Plow.run(0.8),
+                                                        Plow.run(0.85),
                                                         waitMs(250),
                                                         Plow.run(0.93),
                                                         waitMs(250),
-                                                        Plow.run(0.8),
+                                                        Plow.run(0.9),
                                                         waitMs(250),
                                                         Plow.run(0.93)
                                                 ),
@@ -176,7 +179,6 @@ public class RedAutoUp extends OpMode {
                                                 Kicker.run(0, 0),
                                                 waitMs(50)
                                         ),
-                                        follow(follower, liningUp()),
                                         follow(follower, collectingWallPollen()),
                                         // Intake collection of wall pollen
                                         race(

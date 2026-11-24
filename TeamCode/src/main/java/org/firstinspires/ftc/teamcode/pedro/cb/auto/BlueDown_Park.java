@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.OpModeStorage;
 
 @Autonomous(name="BlueDown_Park", group="Auto", preselectTeleOp="CB111TWOCon")
 
@@ -60,6 +61,7 @@ public class BlueDown_Park extends OpMode {
         Scheduler.reset();
 
         follower = Constants.create(hardwareMap);
+        OpModeStorage.selectedPosition = OpModeStorage.StartingPosition.BLUE_DOWN;
         follower.setPose(start);
         follower.update();
 
@@ -78,6 +80,6 @@ public class BlueDown_Park extends OpMode {
 
     @Override
     public void stop() {
-
+        OpModeStorage.autonomousEndPose = follower.pose();
     }
 }

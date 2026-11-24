@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "timestamp": "2026-11-16T23:18:37.860Z",
+  "timestamp": "2026-11-24T01:51:36.401Z",
   "startPoint": {
     "x": 56,
     "y": 9,
@@ -59,9 +59,9 @@
       }
     },
     {
-      "id": "line-muna5e3y-w62pxc",
-      "color": "#C6798D",
-      "name": "liningUp",
+      "id": "line-mune6oc5-njez9w",
+      "color": "#86B88D",
+      "name": "collectingWallPollen",
       "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
@@ -70,36 +70,14 @@
       "kind": "atomic",
       "endPoint": {
         "x": 9,
-        "y": 29
+        "y": 9
       },
       "controlPoints": [
         {
-          "x": 11.8,
-          "y": 48
+          "x": 4.4339364619932295,
+          "y": 49.571152714874344
         }
       ],
-      "heading": {
-        "type": "linear",
-        "reverse": true,
-        "startDeg": -90,
-        "endDeg": -90
-      }
-    },
-    {
-      "id": "line-mune6oc5-njez9w",
-      "color": "#86B88D",
-      "name": "collectingWallPollen",
-      "locked": false,
-      "waitBeforeMs": 0,
-      "waitAfterMs": 1000,
-      "waitBeforeName": "",
-      "waitAfterName": "",
-      "kind": "atomic",
-      "endPoint": {
-        "x": 10,
-        "y": 10
-      },
-      "controlPoints": [],
       "heading": {
         "type": "linear",
         "reverse": true,
@@ -113,7 +91,7 @@
       "name": "collectingWallPollen",
       "locked": false,
       "waitBeforeMs": 0,
-      "waitAfterMs": 2000,
+      "waitAfterMs": 0,
       "waitBeforeName": "",
       "waitAfterName": "",
       "kind": "atomic",
@@ -201,10 +179,6 @@
     {
       "kind": "path",
       "lineId": "line-mvfvqwfg-yntw64"
-    },
-    {
-      "kind": "path",
-      "lineId": "line-muna5e3y-w62pxc"
     },
     {
       "kind": "path",

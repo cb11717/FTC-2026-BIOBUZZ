@@ -21,6 +21,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Kicker;
+import org.firstinspires.ftc.teamcode.pedro.cb.utility.OpModeStorage;
 import org.firstinspires.ftc.teamcode.pedro.cb.utility.Shooter;
 
 @Autonomous(name="RedUp_Park", group="Auto", preselectTeleOp="CB112TWOCon10nov261748")
@@ -63,10 +64,16 @@ public class RedUp_Park extends OpMode {
         follower.update();
         Scheduler.execute();
 
+        telemetry.addData("Pollen Target TPS", TPS_Poll_Wall);
+        telemetry.addData("Pollen Actual TPS", Shooter.getPollenVelocity());
+        telemetry.addData("Pollen Current (A)", Shooter.getPollenCurrentAmps());
+        /*
         telemetry.addData("X", follower.pose().x());
         telemetry.addData("Y", follower.pose().y());
         telemetry.addData("Heading", Math.toDegrees(follower.pose().heading()));
         telemetry.addData("Follower Mode", follower.mode());
+
+         */
         telemetry.update();
     }
 
@@ -77,6 +84,7 @@ public class RedUp_Park extends OpMode {
         follower = Constants.create(hardwareMap);
         Shooter.init(hardwareMap);
         Kicker.init(hardwareMap);
+        OpModeStorage.selectedPosition = OpModeStorage.StartingPosition.RED_UP;
         follower.setPose(start);
         follower.update();
     }
@@ -92,5 +100,6 @@ public class RedUp_Park extends OpMode {
 
     @Override
     public void stop() {
+        OpModeStorage.autonomousEndPose = follower.pose();
     }
 }

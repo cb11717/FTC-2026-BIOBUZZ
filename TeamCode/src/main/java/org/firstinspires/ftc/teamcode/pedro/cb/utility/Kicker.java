@@ -62,8 +62,9 @@ public class Kicker {
                 })
                 .setEnd(interrupted -> {
                     // Safety: turns the motor off when the command is interrupted/ended
-                   // NectKick.setPower(0);
-                    //PllnKick.setPower(0);
+                   // NectKick.setPower(0.0);
+                    //PllnKick.setPower(0.0);
+                    //PllnKick2.setPower(0.0);
                     KickerInterrupted = "***YES***";
 
                 });
